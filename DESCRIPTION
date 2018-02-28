@@ -1,11 +1,12 @@
 Package: gANOVA
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Generalized covariance structure of ANOVA to mixed models
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(
+  person("Jaromil","Frossard", email = "jaromil.frossard@unige.ch",role = c("aut", "cre")),
+  person("Olivier","Renaud",email="olivier.renaud@unige.ch",role=c("aut")))
+Description: This package is a "hack" a the lme4 function to provide covariance structure with same variance for orthonormal contrasts.
+License: GPL (>= 2)
+Imports: lme4
 Encoding: UTF-8
 LazyData: true
