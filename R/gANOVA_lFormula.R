@@ -1,3 +1,19 @@
+#' lFormula for gANOVA correlation structure
+#'
+#' @description This function provide a small modification of the \code{lme4} function \code{link{lFormula}} in order to estimated mixed models with the same variance for orthonormal contrasts. Check formula parameter for details.
+#' @param formula a \code{lme4} formula. If you provide f formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The indifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts.
+#' @param data a data frame. See \code{\link{lmer}} for more details.
+#' @param REML a logical that indicate which criterion to optimize. See \code{\link{lmer}} for more details.
+#' @param subset an expression to selecte a subset of the data. See \code{\link{lmer}} for more details.
+#' @param weights an optional vector of weights. See \code{\link{lmer}} for more details.
+#' @param na.action a function that handle \code{NA}'s. See \code{\link{lmer}} for more details.
+#' @param offset specify a priori component in the predictor. See \code{\link{lmer}} for more details.
+#' @param contrasts a list of contrasts. See \code{\link{lmer}} for more details.
+#' @param control Some parameters. See \code{\link{lmerControl}} or \code{\link{lmer}} for more details.
+#' @param ... See \code{\link{lFormula}} or \code{\link{lmer}} for more details.
+#' @importFrom Matrix rankMatrix
+#' @importFrom lme4 expandDoubleVerts subbars factorize findbars nobars
+#' @export
 gANOVA_lFormula <- function(formula, data = NULL, REML = TRUE, subset, weights,
             na.action, offset, contrasts = NULL, control = lmerControl(),
             ...){

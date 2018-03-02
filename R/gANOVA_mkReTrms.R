@@ -1,3 +1,6 @@
+#' @importFrom Matrix sparseMatrix drop0
+#' @importMethodsFrom Matrix t diag
+#' @importClassesFrom Matrix sparseMatrix
 gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
   if (!length(bars))
     stop("No random effects terms specified in formula",
@@ -29,16 +32,14 @@ gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
   boff <- cumsum(c(0L, nb))
   thoff <- cumsum(c(0L, nth))
   Lambdat <- t(do.call(sparseMatrix, do.call(rBind, lapply(seq_along(blist),
-                                                           function(i) {
-                                                             mm <- matrix(seq_len(nb[i]), ncol = nc[i], byrow = TRUE)
-                                                             dd <- diag(nc[i])
-                                                             ltri <- lower.tri(dd, diag = TRUE)
-                                                             ii <- row(dd)[ltri]
-                                                             jj <- col(dd)[ltri]
-                                                             data.frame(i = as.vector(mm[, ii]) + boff[i], j = as.vector(mm[,
-                                                                                                                            jj]) + boff[i], x = as.double(rep.int(seq_along(ii),
-                                                                                                                                                                  rep.int(nl[i], length(ii))) + thoff[i]))
-                                                           }))))
+              function(i) {mm <- matrix(seq_len(nb[i]), ncol = nc[i], byrow = TRUE)
+                           dd <- diag(nc[i])
+                           ltri <- lower.tri(dd, diag = TRUE)
+                           ii <- row(dd)[ltri]
+                           jj <- col(dd)[ltri]
+                           data.frame(i = as.vector(mm[, ii]) + boff[i],
+                                      j = as.vector(mm[,jj]) + boff[i],
+                                      x = as.double(rep.int(seq_along(ii),rep.int(nl[i], length(ii))) + thoff[i]))}))))
   thet <- numeric(sum(nth))
   ll <- list(Zt = drop0(Zt), theta = thet, Lind = as.integer(Lambdat@x),
              Gp = unname(c(0L, cumsum(nb))))

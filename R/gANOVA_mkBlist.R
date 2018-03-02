@@ -1,3 +1,6 @@
+#' @importFrom stats contr.poly
+#' @importFrom Matrix fac2sparse KhatriRao Matrix
+#' @importFrom lme4 factorize
 gANOVA_mkBlist = function (x, frloc, drop.unused.levels = TRUE) {
   frloc <- factorize(x, frloc)
   interlogical = length(x[[3]])>1
@@ -34,7 +37,7 @@ gANOVA_mkBlist = function (x, frloc, drop.unused.levels = TRUE) {
 
 
     sm[2:length(sm)] <- lapply(sm[2:length(sm)],function(mat){
-      mat%*%Matrix(cont.poly(ncol(mat)),sparse=TRUE)})
+      mat%*%Matrix(contr.poly(ncol(mat)),sparse=TRUE)})
     sm = lapply(sm, function(mat){t(mat)})
     smtemp = sm[[1]]
 
