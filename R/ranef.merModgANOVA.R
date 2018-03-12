@@ -1,5 +1,6 @@
 #' @importFrom Matrix rBind
 #' @importFrom lme4 getME rePos
+#' @export
 ranef.merModgANOVA <- function (object, condVar = FALSE, drop = FALSE, whichel = names(ans),
                      postVar = FALSE, ...)
 {

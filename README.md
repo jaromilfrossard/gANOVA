@@ -1,3 +1,3 @@
 # gANOVA
 
-This package provide a modification of the lme4 package in order to optain covariance structure with equal variance for the contrasts of factors. Using the formula (1|id:g) with the lmer function produce a parametrization of the variance with additional constraints and may cause convergence error. The gANOVA function adds orthonormal contrasts on the g factors and less convergence error and less estimated parameters at the boundary of the domain. 
+This package provide a modification of the lme4 package in order to optain covariance structure with equal variance for the contrasts of factors. Using the formula (1|id:g) with the lmer function produce a parametrization of the variance with additional constraints and may cause convergence error. The gANOVA function adds orthonormal contrasts on the g factors and less convergence error and less estimated parameters at the boundaries of the domain. 
