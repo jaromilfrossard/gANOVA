@@ -1,3 +1,4 @@
+#' @export
 update.merModgANOVA <- function (object, formula., ..., evaluate = TRUE,input = NULL) {
   if (is.null(call <- getCall(object)))
     stop("object should contain a 'call' component")
