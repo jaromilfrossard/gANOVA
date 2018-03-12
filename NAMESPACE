@@ -3,6 +3,7 @@
 export(anova)
 export(gANOVA)
 export(gANOVA_lFormula)
+export(ranef.merModgANOVA)
 export(summary)
 exportClasses(merModgANOVA)
 importClassesFrom(Matrix,sparseMatrix)
