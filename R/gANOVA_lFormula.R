@@ -1,7 +1,7 @@
 #' lFormula for gANOVA correlation structure
 #'
 #' @description This function provide a small modification of the \code{lme4} function \code{link{lFormula}} in order to estimated mixed models with the same variance for orthonormal contrasts. Check formula parameter for details.
-#' @param formula a \code{lme4} formula. If you provide f formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The indifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts.
+#' @param formula a \code{lme4} formula. If you provide a formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See link{gANOVA} for the reduced notation.
 #' @param data a data frame. See \code{\link{lmer}} for more details.
 #' @param REML a logical that indicate which criterion to optimize. See \code{\link{lmer}} for more details.
 #' @param subset an expression to selecte a subset of the data. See \code{\link{lmer}} for more details.
@@ -29,6 +29,23 @@ gANOVA_lFormula <- function(formula, data = NULL, REML = TRUE, subset, weights,
         mc[["control"]] <- glmerControl()
       return(eval(mc, parent.frame()))
     }
+    #################################################################################################################
+    ## reduced notation hack
+    ff = nobars(lme4:::RHSForm(formula))
+    fb = findbars(lme4:::RHSForm(formula))
+    fbi = fb[[1]]
+    rf= unlist(sapply(fb,function(fbi){
+      fbi = deparse(fbi)
+      gex = gregexpr(pattern =" | ",fbi,fixed =T)
+      if(length(gex[[1]])==2){
+        f_r = paste("~",substring(text = fbi, first = gex[[1]][2]+2, last = 1000000L),sep="")
+        f_l = substring(text = fbi, first = 1 , last = gex[[1]][2])
+        c(f_l,paste(f_l,attr(terms(as.formula(f_r)),"term.labels"),sep=":")) }else{ fbi } }))
+
+    formula = formula(paste(deparse(formula[[2]]), paste(deparse(ff),paste("(",rf,")",collapse = "+"),collapse = " + ",sep = "+"),sep = "~"))
+    #################################################################################################################
+
+
     cstr <- "check.formula.LHS"
     lme4:::checkCtrlLevels(cstr, control[[cstr]])
     denv <- lme4:::checkFormulaData(formula, data, checkLHS = control$check.formula.LHS ==

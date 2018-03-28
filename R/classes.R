@@ -1,2 +1,4 @@
-#' @export
-merModgANOVA <- setClass("merModgANOVA", contains = c("merMod", "lmerMod","merModLmerTest"))
+#' The MerModgANOVA class
+
+#' @exportClass merModgANOVA
+setClass("merModgANOVA", contains = c("merMod", "lmerMod","merModLmerTest"))

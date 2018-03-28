@@ -9,7 +9,7 @@ gANOVA(formula, data = NULL, REML = TRUE, control = lmerControl(),
   contrasts = NULL, devFunOnly = FALSE, ...)
 }
 \arguments{
-\item{formula}{a \code{lme4} formula. If you provide f formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The indifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts.}
+\item{formula}{a \code{lme4} formula. If you provide a formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See Details for the reduced notation.}
 
 \item{data}{a data frame. See \code{\link{lmer}} for more details.}
 
@@ -40,6 +40,7 @@ This function provide a small modification of the \code{lme4} function \code{lin
 }
 \details{
 \code{summary} and \code{anova} method are copied from the \code{lmerTest} package in order to have p-values.
+Given 2 factors, \code{f} and \code{g}, and a grouping variable \code{id}, the formula \code{(1|id) + (1|id:f)+ (1|id:g)+ (1|id:f:g)} can be reduced to  \code{(1|id|f*g)}. However the grouping variable (herer \code{id}) should be written as one variable.
 }
 \seealso{
 \code{\link{lmer}}.

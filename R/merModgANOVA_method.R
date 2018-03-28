@@ -1,3 +1,11 @@
+#' summary method for merModgANVOA
+#'
+#' @description modified summary method from lmerTest package
+#'
+#' @param object an object of class merModgANOVA.
+#' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
+#' @param ... futher argument. See details.
+#' @details See the lmerTest package for more informations.
 #' @export summary
 setMethod("summary", signature(object = "merModgANOVA"),
           function(object, ddf="Satterthwaite", ...){
@@ -31,6 +39,15 @@ setMethod("summary", signature(object = "merModgANOVA"),
             return(cl)
           })
 
+#' anova method for merModgANVOA
+#'
+#' @description modified anova method from lmerTest package
+#'
+#' @param object an object of class merModgANOVA.
+#' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
+#' @param type a integer indicating the equivalent type of SS. Default is 3.
+#' @param ... futher argument. See details.
+#' @details See the lmerTest package for more informations.
 #' @importFrom methods callNextMethod
 #' @importFrom utils as.roman
 #' @export anova
