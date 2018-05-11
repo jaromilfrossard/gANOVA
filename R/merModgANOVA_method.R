@@ -1,3 +1,11 @@
+#' Method summary.
+#' @name merModgANVOA-class
+#' @rdname merModgANVOA-class
+#' @exportMethod summary
+setGeneric("summary", function(x) standardGeneric("summary"))
+
+
+
 #' summary method for merModgANVOA
 #'
 #' @description modified summary method from lmerTest package
@@ -7,7 +15,6 @@
 #' @param ... futher argument. See details.
 #' @details See the lmerTest package for more informations.
 #' @importMethodsFrom lmerTest summary
-#' @exportMethod summary
 setMethod("summary", signature(object = "merModgANOVA"),
           function(object, ddf="Satterthwaite", ...){
             if(!is.null(ddf) && ddf=="lme4"){
