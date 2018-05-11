@@ -7,7 +7,7 @@
 #' @param ... futher argument. See details.
 #' @details See the lmerTest package for more informations.
 #' @importMethodsFrom lmerTest summary
-#' @export summary
+#' @exportMethod summary
 setMethod("summary", signature(object = "merModgANOVA"),
           function(object, ddf="Satterthwaite", ...){
             if(!is.null(ddf) && ddf=="lme4"){
