@@ -17,12 +17,9 @@
 #' @details \code{summary} and \code{anova} method are copied from the \code{lmerTest} package in order to have p-values.
 #' Given 2 factors, \code{f} and \code{g}, and a grouping variable \code{id}, the formula \code{(1|id) + (1|id:f)+ (1|id:g)+ (1|id:f:g)} can be reduced to  \code{(1|id|f*g)}. However the grouping variable (herer \code{id}) should be written as one variable.
 #' @seealso \code{\link{lmer}}.
-#' @importClassesFrom lmerTest merModLmerTest
-#' @importClassesFrom lme4 merMod
 #' @importFrom methods as is new
 #' @importFrom stats as.formula formula getCall model.matrix sigma terms update.formula
 #' @importFrom lme4 lmerControl glmerControl mkLmerDevfun optimizeLmer checkConv
-#' @importFrom lmerTest summary
 #' @export
 gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
                     start = NULL, verbose = 0L, subset, weights, na.action, offset,
@@ -74,7 +71,7 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
   model = lme4::mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
            mc = mcout, lme4conv = cc)
   if (inherits(model, "merMod")){
-    model <- as(model, c("merModLmerTest"))
+    model <- as(model, c("lmerModLmerTest"))
     model <- as(model, c("merModgANOVA"))
     }
   model
