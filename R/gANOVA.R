@@ -21,7 +21,7 @@
 #' @importClassesFrom lme4 merMod
 #' @importFrom methods as is new
 #' @importFrom stats as.formula formula getCall model.matrix sigma terms update.formula
-#' @importFrom lme4 lmerControl glmerControl mkLmerDevfun optimizeLmer checkConv
+#' @importFrom lme4 lmerControl glmerControl mkLmerDevfun optimizeLmer
 #' @importFrom lmerTest summary
 #' @export
 gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
@@ -66,7 +66,7 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
                  verbose = verbose, start = start, calc.derivs = control$calc.derivs,
                  use.last.params = control$use.last.params)
   }
-  cc <- checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,
+  cc <- lme4:::checkConv(attr(opt, "derivs"), opt$par, ctrl = control$checkConv,
                   lbound = environment(devfun)$lower)
 
   # mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
