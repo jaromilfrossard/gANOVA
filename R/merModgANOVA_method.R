@@ -6,7 +6,6 @@
 #' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
 #' @param ... futher argument. See details.
 #' @details See the lmerTest package for more informations.
-#' @importMethodsFrom lmerTest summary
 #' @export summary
 setMethod("summary", signature(object = "merModgANOVA"),
           function(object, ddf="Satterthwaite", ...){
