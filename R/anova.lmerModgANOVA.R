@@ -11,7 +11,7 @@
 #' @export
 anova.lmerModgANOVA <- function(object, ..., type = c("III", "II", "I", "3", "2", "1"),
                                 ddf = c("Satterthwaite", "Kenward-Roger", "lme4")){
-  object <- as(object, "lmerModLmerTest")
+  #object <- as(object, "lmerModLmerTest")
   lmerTest:::anova.lmerModLmerTest(object = object, ... = ... ,type=type,ddf = ddf)
 }
 
