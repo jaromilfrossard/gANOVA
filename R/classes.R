@@ -2,5 +2,5 @@
 
 #' @importClassesFrom lme4 merMod lmerMod
 #' @importClassesFrom lmerTest lmerModLmerTest
-#' @exportClass merModgANOVA
-setClass("merModgANOVA", contains = c("merMod", "lmerMod","lmerModLmerTest"))
+#' @exportClass lmerModgANOVA
+setClass("lmerModgANOVA", contains = c("merMod", "lmerMod","lmerModLmerTest"))

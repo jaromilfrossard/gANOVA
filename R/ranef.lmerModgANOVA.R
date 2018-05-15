@@ -1,7 +1,7 @@
-#' ranef method for merModgANOVA object
+#' ranef method for lmerModgANOVA object
 #'
-#' @description Extract the modes of random effects (BLUP) of the model. Just small changes from the ranef.merMod method of lme4 to handle merModgANOVA.
-#' @param object a merModgANOVA object.
+#' @description Extract the modes of random effects (BLUP) of the model. Just small changes from the ranef.merMod method of lme4 to handle lmerModgANOVA.
+#' @param object a lmerModgANOVA object.
 #' @param condVar see lmer.
 #' @param drop see lmer.
 #' @param whichel see lmer.
@@ -10,7 +10,7 @@
 #' @importFrom Matrix rBind
 #' @importFrom lme4 getME rePos
 #' @export
-ranef.merModgANOVA <- function (object, condVar = FALSE, drop = FALSE, whichel = names(ans),
+ranef.lmerModgANOVA <- function (object, condVar = FALSE, drop = FALSE, whichel = names(ans),
                      postVar = FALSE, ...)
 {
   if (length(L <- list(...)) > 0) {

@@ -70,9 +70,16 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
   #          mc = mcout, lme4conv = cc)
   model = lme4::mkMerMod(environment(devfun), opt, lmod$reTrms, fr = lmod$fr,
            mc = mcout, lme4conv = cc)
-  if (inherits(model, "merMod")){
-    model <- as(model, c("lmerModLmerTest"))
-    model <- as(model, c("merModgANOVA"))
-    }
-  model
+  res <- lmerTest:::as_lmerModLT(model, devfun)
+
+  res@call <- mc
+  res <- as(res, c("lmerModgANOVA"))
+  res
+
+  # model <<- model
+  # if (inherits(model, "merMod")){
+  #   model <- as(model, c("lmerModLmerTest"))
+  #   model <- as(model, c("lmerModgANOVA"))
+  #   }
+  # model
 }
