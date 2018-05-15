@@ -73,8 +73,6 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
   res <- lmerTest:::as_lmerModLT(model, devfun)
 
   res@call <- mc
-  res <- as(res, c("lmerModLmerTest"))
-  res <- as(res, c("lmerModgANOVA"))
   res
 
   # model <<- model
