@@ -1,15 +1,31 @@
-# #' anova method for merModgANVOA
-# #'
-# #' @description modified anova method from lmerTest package
-# #'
-# #' @param object an object of class lmerModgANOVA.
-# #' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
-# #' @param type a integer indicating the equivalent type of SS. Default is 3.
-# #' @param ... futher argument. See details.
-# #' @details See the lmerTest package for more informations.
-# #' @importFrom methods callNextMethod
-# #' @importFrom utils as.roman
-# #' @export
+#' anova method for merModgANVOA
+#'
+#' @description modified anova method from \code{lmerTest} package
+#'
+#' @param object an object of class lmerModgANOVA. See \code{lmerTest} package.
+#' @param ddf a character string indicating the method.See \code{lmerTest} package.
+#' @param type a integer indicating the equivalent type of SS. See \code{lmerTest} package.
+#' @param ... futher argument. See \code{lmerTest} package.
+#' @importFrom methods callNextMethod
+#' @importFrom utils as.roman
+#' @export
+anova.lmerModgANOVA <- function(object, ..., type = c("III", "II", "I", "3", "2", "1"),
+                                ddf = c("Satterthwaite", "Kenward-Roger", "lme4")){
+  object <- as(object, "lmerModLmerTest")
+  lmerTest:::anova.lmerModLmerTest(object = object, ... = ... ,type=type,ddf = ddf)
+}
+
+
+
+
+
+
+
+
+
+
+
+
 # anova.lmerModgANOVA <- function (object, ..., type = c("III", "II", "I", "3", "2", "1"),
 #                                  ddf = c("Satterthwaite", "Kenward-Roger", "lme4"))
 # {
