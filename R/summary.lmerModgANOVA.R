@@ -1,12 +1,19 @@
-#' #' summary method for merModgANVOA
-#' #'
-# #' @description modified summary method from lmerTest package
-# #'
-# #' @param object an object of class lmerModgANOVA.
-# #' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
-# #' @param ... futher argument. See details.
-# #' @details See the lmerTest package for more informations.
-# #' @export
+#' summary method for merModgANVOA
+#'
+#' @description modified summary method from lmerTest package
+#'
+#' @param object an object of class lmerModgANOVA.
+#' @param ddf a character string indicating the method. Default is \code{"Satterthwaite"} and \code{"Kenward-Roger"} is available. See details.
+#' @param ... futher argument. See details.
+#' @details See the lmerTest package for more informations.
+#' @export
+summary.lmerModgANOVA <- function(object, ..., ddf = c("Satterthwaite", "Kenward-Roger", "lme4")){
+  lmerTest:::summary.lmerModLmerTest(object = object, ... = ... ,ddf = ddf)
+}
+
+
+
+
 # summary.lmerModgANOVA <- function(object, ddf="Satterthwaite", ...){
 #             if(!is.null(ddf) && ddf=="lme4"){
 #               if(class(object) == "lmerModgANOVA")
