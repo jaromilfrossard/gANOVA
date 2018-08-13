@@ -135,7 +135,8 @@ refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE,
     res <- mkMerMod(environment(ff), opt, list(flist = object@flist,
                                         cnms = object@cnms, Gp = object@Gp, lower = object@lower),
              object@frame, getCall(object), cc)
-
+    res = lmerTest:::as_lmerModLT(res, devfun)
+    res@call <- mc
     res <- as(res, c("lmerModgANOVA"))
     res
   }
