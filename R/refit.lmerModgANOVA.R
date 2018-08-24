@@ -9,7 +9,7 @@
 #' @param ... orther arguments
 #' @seealso \code{\link{refit}}
 #' @export
-#' @importFrom lme4 isGLMM isLMM isREML GHrule fixef mkMerMod
+#' @importFrom lme4 isGLMM isLMM isREML GHrule fixef mkMerMod mkRespMod
 #' @importFrom stats model.frame family
 refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE, maxit = 100L,
             ...)
@@ -18,7 +18,7 @@ refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE,
     ctrl.arg <- NULL
     if ("control" %in% names(l...))
       ctrl.arg <- l...$control
-    if (!all(names(l...) %in% c("control", "verbose","start"))) {
+    if (!all(names(l...) %in% c("control", "verbose"))) {
       warning("additional arguments to refit.merMod ignored")
     }
     newrespSub <- substitute(newresp)
@@ -71,7 +71,7 @@ refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE,
       object@frame[, rcol] <- newresp
     }
     rr <- if (isLMM(object))
-    {lme4:::mkRespMod(model.frame(object), REML = isREML(object))
+    {mkRespMod(model.frame(object), REML = isREML(object))
       }
     else if (isGLMM(object)) {
       #mkRespMod(model.frame(object), family = family(object))
