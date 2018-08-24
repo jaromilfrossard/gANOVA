@@ -18,7 +18,7 @@ refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE,
     ctrl.arg <- NULL
     if ("control" %in% names(l...))
       ctrl.arg <- l...$control
-    if (!all(names(l...) %in% c("control", "verbose"))) {
+    if (!all(names(l...) %in% c("control", "verbose","start"))) {
       warning("additional arguments to refit.merMod ignored")
     }
     newrespSub <- substitute(newresp)
