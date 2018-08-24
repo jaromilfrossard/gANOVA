@@ -116,7 +116,8 @@ refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE,
     ff <- lme4:::mkdevfun(list2env(devlist), nAGQ = nAGQ, maxit = maxit,
                    verbose = verbose)
     xst <- rep.int(0.1, nth)
-    x0 <- pp$theta
+    if(is.null(l...$start)){x0 <- pp$theta}else{x0<-l...$start}
+
     lower <- object@lower
     if (!is.na(nAGQ) && nAGQ > 0L) {
       xst <- c(xst, sqrt(diag(pp$unsc())))
