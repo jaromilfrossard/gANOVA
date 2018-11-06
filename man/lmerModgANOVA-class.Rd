@@ -3,6 +3,7 @@
 \docType{class}
 \name{lmerModgANOVA-class}
 \alias{lmerModgANOVA-class}
+\alias{lmerModgANOVA}
 \title{The MerModgANOVA class}
 \description{
 The MerModgANOVA class

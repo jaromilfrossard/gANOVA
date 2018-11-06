@@ -75,7 +75,7 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
 
   res@call <- mc
   res <- as(res, c("lmerModgANOVA"))
-  res@rTerms=lmod$reTrms
+  res@reTrms <- lmod$reTrms
   res
 
   # model <<- model

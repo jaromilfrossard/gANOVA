@@ -4,6 +4,6 @@
 #' @importClassesFrom lmerTest lmerModLmerTest
 #' @exportClass lmerModgANOVA
 setClass("lmerModgANOVA", contains = c("merMod", "lmerMod","lmerModLmerTest"),
-         slots = c(rTerms ="list"))->lmerModgANOVA
+         slots = c(reTrms="list"))->lmerModgANOVA
 
 
