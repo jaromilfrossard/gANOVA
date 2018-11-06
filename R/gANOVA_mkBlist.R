@@ -22,6 +22,7 @@ gANOVA_mkBlist = function (x, frloc, drop.unused.levels = TRUE) {
 
   sm = fac2sparse(ff, to = "d", drop.unused.levels = drop.unused.levels)
   #print(t(sm)[1:nrow(sm),1:nrow(sm)])
+  contrz = NULL
 
   if(interlogical){
     form = paste("~",deparse(x[[3]]))
@@ -33,6 +34,10 @@ gANOVA_mkBlist = function (x, frloc, drop.unused.levels = TRUE) {
     sm = lapply(effect,function(e){
       Matrix(model.matrix(formula(paste("~0+",e,sep="")),data = frloc),sparse = TRUE)
     })
+
+
+    contrz <- lapply(sm[2:length(sm)],function(mat){
+      Matrix(contr.poly(ncol(mat)),sparse=TRUE)})
 
 
 
@@ -56,9 +61,11 @@ gANOVA_mkBlist = function (x, frloc, drop.unused.levels = TRUE) {
 
   nl <- nrow(sm)
   sm <- KhatriRao(sm, t(mm),make.dimnames = TRUE)
+
+
   #sm@x <- sm@x / rep.int(colSums(sm), diff(sm@p))
   #dimnames(sm) <- list(rep(levels(ff), each = ncol(mm)), rownames(mm))
-  list(ff = ff, sm = sm, nl = nl, cnms = colnames(mm))
+  list(ff = ff, sm = sm, nl = nl, cnms = colnames(mm), contrz = contrz)
 }
 
 

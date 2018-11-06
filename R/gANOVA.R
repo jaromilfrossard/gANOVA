@@ -43,6 +43,7 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
   }
   mc$control <- control
   mc[[1]] <- quote(gANOVA::gANOVA_lFormula)
+  mc[[1]] <- quote(gANOVA_lFormula)
   lmod <- eval(mc, parent.frame(1L))
   mcout$formula <- lmod$formula
   lmod$formula <- NULL
@@ -74,6 +75,7 @@ gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
 
   res@call <- mc
   res <- as(res, c("lmerModgANOVA"))
+  res@rTerms=lmod$reTrms
   res
 
   # model <<- model

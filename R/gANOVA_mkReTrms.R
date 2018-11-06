@@ -10,6 +10,7 @@ gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
   names(bars) <- lme4:::barnames(bars)
   term.names <- vapply(bars, lme4:::safeDeparse, "")
   blist <- lapply(bars, gANOVA_mkBlist, fr, drop.unused.levels)
+
   nl <- vapply(blist, `[[`, 0L, "nl")
   if (any(diff(nl) > 0)) {
     ord <- rev(order(nl))
@@ -18,8 +19,15 @@ gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
     term.names <- term.names[ord]
   }
   Ztlist <- lapply(blist, `[[`, "sm")
-  Zt <- do.call(rBind, Ztlist)
+  Zt <- do.call("rbind", Ztlist)
   names(Ztlist) <- term.names
+  contrlist <- lapply(blist, `[[`,"contrz")
+  names(contrlist) <- term.names
+
+  #print(contrlist)
+
+
+
   q <- nrow(Zt)
   cnms <- lapply(blist, `[[`, "cnms")
   nc <- lengths(cnms)
@@ -31,7 +39,7 @@ gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
   }
   boff <- cumsum(c(0L, nb))
   thoff <- cumsum(c(0L, nth))
-  Lambdat <- t(do.call(sparseMatrix, do.call(rBind, lapply(seq_along(blist),
+  Lambdat <- t(do.call(sparseMatrix, do.call("rbind", lapply(seq_along(blist),
               function(i) {mm <- matrix(seq_len(nb[i]), ncol = nc[i], byrow = TRUE)
                            dd <- diag(nc[i])
                            ltri <- lower.tri(dd, diag = TRUE)
@@ -60,5 +68,6 @@ gANOVA_mkReTrms = function (bars, fr, drop.unused.levels = TRUE) {
   ll$flist <- fl
   ll$cnms <- cnms
   ll$Ztlist <- Ztlist
+  ll$contrlist <- contrlist
   ll
 }
