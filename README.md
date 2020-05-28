@@ -4,7 +4,7 @@ This package provides a modification of the `lmer()` function from the `lme4` pa
 
 Currently `lme4` has the possibiliy to estimate the spherical random effects using `+ (1|id:f)`. However the parametrization used in `lme4` puts constraints on lower interaction parameters, such that the covariance estimated using `+ (1|id) + (1|id:f)` may have the variance of `(1|id)` estimated at the boundary (or simply 0). `gANOVA` reparametrizes the covariance matrix in order to extend the range of parameters such that variance of lower interactions estimated at 0 happen less.
 
-This new parametrization is simply transforming factors into orthonormal contrasts and imposing a unique variance parameter for all contrasts of the factors.
+Technically, this new parametrization is simply transforming factors into orthonormal contrasts and imposing a unique variance parameter for all contrasts of the factors.
 
 Currently, the notation in `lmer()` to estimate spherical covariance of random effect is using `+ (1|id) + (1|id:f) + (1|id:g) + (1|id:f:g)`. This notation can be used in `gANOVA()` for this new parametrization. However, `gANOVA()` also provides a simplification of the notatation, such that `+ (1|id) + (1|id:f) + (1|id:g) + (1|id:f:g)` may be rewritten simply as `+ (1|id|f*g)`.
 
