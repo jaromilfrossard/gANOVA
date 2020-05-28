@@ -1,6 +1,6 @@
 # gANOVA
 
-This package provides a modification of the `lmer()` function from the `lme4` package. It estimates a spherical correlation of random effects when interacting fixed factors with random samples. The method is explained in detail in (The correlation structure of mixed effects models with crossed random effects in controlled experiments)[https://arxiv.org/abs/1903.10766].
+This package provides a modification of the `lmer()` function from the `lme4` package. It estimates a spherical correlation of random effects when interacting fixed factors with random samples. The method is explained in detail in [The correlation structure of mixed effects models with crossed random effects in controlled experiments](https://arxiv.org/abs/1903.10766).
 
 Currently `lme4` has the possibiliy to estimate the spherical random effects using `+ (1|id:f)`. However the parametrization used in `lme4` puts constraints on lower interaction parameters, such that the covariance estimated using `+ (1|id) + (1|id:f)` may have the variance of `(1|id)` estimated at the boundary (or simply 0). `gANOVA` reparametrizes the covariance matrix in order to extend the range of parameters such that variance of lower interactions estimated at 0 happen less.
 
