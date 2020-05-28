@@ -1,0 +1,114 @@
+---
+title: "Spherical distribution: example"
+author: "Jaromil Frossard"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{spherical-distribution-example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Introduction
+
+We present here some example to highlight the difference between the `gANOVA()` function and the built-in spherical distribution of `lmer()`.
+
+We will need the following packages:
+
+```{r,message=FALSE,warning=FALSE}
+library(lme4)
+library(gANOVA)
+library(tidyverse)
+```
+
+
+Then we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:
+
+```{r}
+set.seed(42)
+
+df <- expand.grid(pt = paste0("P",str_pad(1:12,width = 2,pad = "0")),
+                  A = paste0("A",1:4),
+                  r = 1:3,
+                  stringsAsFactors = F)%>%
+  select(-r)
+```
+
+
+Then we simulate the response variable
+
+
+```{r}
+# add +(1|pt) random intercept
+df<-
+  df%>%
+  nest(data=-pt)%>%
+  mutate(ranef_pt = rnorm(n(), sd = .8))%>%
+  unnest(data)
+
+# add +(1|pt:A) random slopes
+df<-
+  df%>%
+  nest(data=-c(pt,A))%>%
+  mutate(ranef_ptA = rnorm(n(), sd = 3))%>%
+  unnest(data)
+
+# add an error term
+df<-
+  df%>%
+  mutate(err = rnorm(n(),sd = 4))
+
+
+# create 2 dependant variables
+df <- df%>%
+  transmute(pt = pt, A= A,
+            y_diff = ranef_pt+ranef_ptA+err,
+            y_same =  ranef_pt*2+ranef_ptA+err)
+```
+
+
+Finally, we estimate the model using `y_same` as dependant variable:
+
+```{r}
+lmer_same <- lmer(y_same ~ A+ (1|pt) + (1|pt:A), data=df, contrasts = list(A = contr.sum))
+summary(lmer_same)
+```
+
+
+and then gANOVA:
+
+
+```{r}
+gANOVA_same <- gANOVA(y_same ~ A + (1|pt|A), data=df, contrasts = list(A = contr.sum))
+summary(gANOVA_same)
+```
+
+Using `y_same` the 2 estimations are the same (likelihood, fixed parameters, etc).
+
+However, using `y_diff`, the variability of the random intercepts is smaller. The estimation will produce a singular fit using the parametrization of `lmer()`:
+
+```{r}
+lmer_diff <- lmer(y_diff~ A+ (1|pt)+(1|pt:A),data=df,contrasts = list(A = contr.sum))
+summary(lmer_diff)
+```
+
+
+Estimating the model using `gANOVA()` reduce the constraint on the parameter space (of the variance of the intercept). the gANOVA parametrization produce a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:
+
+
+```{r}
+mod_gANOVA <- gANOVA(y_diff~ A+ (1|pt|A),data=df,contrasts = list(A = contr.sum))
+summary(mod_gANOVA)
+```
+
+
+
+
+

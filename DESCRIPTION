@@ -9,5 +9,10 @@ Description: This package is a modification of the lme4 function to provide cova
 License: GPL (>= 2)
 Imports: lme4, Matrix, lmerTest, methods
 Encoding: UTF-8
+Suggests: 
+    knitr,
+    rmarkdown,
+    tidyverse
 LazyData: true
-RoxygenNote: 6.1.0
+RoxygenNote: 7.1.0
+VignetteBuilder: knitr

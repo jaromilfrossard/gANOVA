@@ -4,9 +4,21 @@
 \alias{gANOVA}
 \title{Linear Mixed Models with same variance for contrasts.}
 \usage{
-gANOVA(formula, data = NULL, REML = TRUE, control = lmerControl(),
-  start = NULL, verbose = 0L, subset, weights, na.action, offset,
-  contrasts = NULL, devFunOnly = FALSE, ...)
+gANOVA(
+  formula,
+  data = NULL,
+  REML = TRUE,
+  control = lmerControl(),
+  start = NULL,
+  verbose = 0L,
+  subset,
+  weights,
+  na.action,
+  offset,
+  contrasts = NULL,
+  devFunOnly = FALSE,
+  ...
+)
 }
 \arguments{
 \item{formula}{a \code{lme4} formula. If you provide a formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See Details for the reduced notation.}

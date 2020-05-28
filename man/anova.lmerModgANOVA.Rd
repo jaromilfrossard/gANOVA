@@ -4,8 +4,12 @@
 \alias{anova.lmerModgANOVA}
 \title{anova method for merModgANVOA}
 \usage{
-\method{anova}{lmerModgANOVA}(object, ..., type = c("III", "II", "I",
-  "3", "2", "1"), ddf = c("Satterthwaite", "Kenward-Roger", "lme4"))
+\method{anova}{lmerModgANOVA}(
+  object,
+  ...,
+  type = c("III", "II", "I", "3", "2", "1"),
+  ddf = c("Satterthwaite", "Kenward-Roger", "lme4")
+)
 }
 \arguments{
 \item{object}{an object of class lmerModgANOVA. See \code{lmerTest} package.}

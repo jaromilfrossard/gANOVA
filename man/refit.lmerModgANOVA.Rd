@@ -4,8 +4,13 @@
 \alias{refit.lmerModgANOVA}
 \title{Refit a lmerModgANOVA model with a new response}
 \usage{
-refit.lmerModgANOVA(object, newresp = NULL, rename.response = FALSE,
-  maxit = 100L, ...)
+refit.lmerModgANOVA(
+  object,
+  newresp = NULL,
+  rename.response = FALSE,
+  maxit = 100L,
+  ...
+)
 }
 \arguments{
 \item{object}{a lmerModgANOVA model}

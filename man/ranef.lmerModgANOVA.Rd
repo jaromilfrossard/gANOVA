@@ -4,8 +4,14 @@
 \alias{ranef.lmerModgANOVA}
 \title{ranef method for lmerModgANOVA object}
 \usage{
-ranef.lmerModgANOVA(object, condVar = FALSE, drop = FALSE,
-  whichel = names(ans), postVar = FALSE, ...)
+ranef.lmerModgANOVA(
+  object,
+  condVar = FALSE,
+  drop = FALSE,
+  whichel = names(ans),
+  postVar = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{a lmerModgANOVA object.}

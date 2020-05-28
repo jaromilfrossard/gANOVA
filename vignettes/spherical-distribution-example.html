@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Jaromil Frossard" />
+
+<meta name="date" content="2020-05-28" />
+
+<title>Spherical distribution: example</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Spherical distribution: example</h1>
+<h4 class="author">Jaromil Frossard</h4>
+<h4 class="date">2020-05-28</h4>
+
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>We present here some example to highlight the difference between the <code>gANOVA()</code> function and the built-in spherical distribution of <code>lmer()</code>.</p>
+<p>We will need the following packages:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(lme4)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(gANOVA)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
+<p>Then we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3">df &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">pt =</span> <span class="kw">paste0</span>(<span class="st">&quot;P&quot;</span>,<span class="kw">str_pad</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,<span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">pad =</span> <span class="st">&quot;0&quot;</span>)),</a>
+<a class="sourceLine" id="cb2-4" title="4">                  <span class="dt">A =</span> <span class="kw">paste0</span>(<span class="st">&quot;A&quot;</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>),</a>
+<a class="sourceLine" id="cb2-5" title="5">                  <span class="dt">r =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb2-6" title="6">                  <span class="dt">stringsAsFactors =</span> F)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>r)</a></code></pre></div>
+<p>Then we simulate the response variable</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># add +(1|pt) random intercept</span></a>
+<a class="sourceLine" id="cb3-2" title="2">df&lt;-</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span>df<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="st">  </span><span class="kw">nest</span>(<span class="dt">data=</span><span class="op">-</span>pt)<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ranef_pt =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(), <span class="dt">sd =</span> <span class="fl">.8</span>))<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="st">  </span><span class="kw">unnest</span>(data)</a>
+<a class="sourceLine" id="cb3-7" title="7"></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co"># add +(1|pt:A) random slopes</span></a>
+<a class="sourceLine" id="cb3-9" title="9">df&lt;-</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span>df<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="st">  </span><span class="kw">nest</span>(<span class="dt">data=</span><span class="op">-</span><span class="kw">c</span>(pt,A))<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ranef_ptA =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(), <span class="dt">sd =</span> <span class="dv">3</span>))<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="st">  </span><span class="kw">unnest</span>(data)</a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co"># add an error term</span></a>
+<a class="sourceLine" id="cb3-16" title="16">df&lt;-</a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="st">  </span>df<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-18" title="18"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">err =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(),<span class="dt">sd =</span> <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb3-19" title="19"></a>
+<a class="sourceLine" id="cb3-20" title="20"></a>
+<a class="sourceLine" id="cb3-21" title="21"><span class="co"># create 2 dependant variables</span></a>
+<a class="sourceLine" id="cb3-22" title="22">df &lt;-<span class="st"> </span>df<span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="st">  </span><span class="kw">transmute</span>(<span class="dt">pt =</span> pt, <span class="dt">A=</span> A,</a>
+<a class="sourceLine" id="cb3-24" title="24">            <span class="dt">y_diff =</span> ranef_pt<span class="op">+</span>ranef_ptA<span class="op">+</span>err,</a>
+<a class="sourceLine" id="cb3-25" title="25">            <span class="dt">y_same =</span>  ranef_pt<span class="op">*</span><span class="dv">2</span><span class="op">+</span>ranef_ptA<span class="op">+</span>err)</a></code></pre></div>
+<p>Finally, we estimate the model using <code>y_same</code> as dependant variable:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">lmer_same &lt;-<span class="st"> </span><span class="kw">lmer</span>(y_same <span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">:</span>A), <span class="dt">data=</span>df, <span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">summary</span>(lmer_same)</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="co">#&gt; Linear mixed model fit by REML [&#39;lmerMod&#39;]</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">#&gt; Formula: y_same ~ A + (1 | pt) + (1 | pt:A)</span></a>
+<a class="sourceLine" id="cb4-5" title="5"><span class="co">#&gt;    Data: df</span></a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-7" title="7"><span class="co">#&gt; REML criterion at convergence: 836.8</span></a>
+<a class="sourceLine" id="cb4-8" title="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; Scaled residuals: </span></a>
+<a class="sourceLine" id="cb4-10" title="10"><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></a>
+<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt; -2.61123 -0.61168 -0.06369  0.59976  2.64576 </span></a>
+<a class="sourceLine" id="cb4-12" title="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; Random effects:</span></a>
+<a class="sourceLine" id="cb4-14" title="14"><span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span></a>
+<a class="sourceLine" id="cb4-15" title="15"><span class="co">#&gt;  pt:A     (Intercept)  9.799   3.130   </span></a>
+<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt;  pt       (Intercept)  2.169   1.473   </span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co">#&gt;  Residual             13.744   3.707   </span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="co">#&gt; Number of obs: 144, groups:  pt:A, 48; pt, 12</span></a>
+<a class="sourceLine" id="cb4-19" title="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-20" title="20"><span class="co">#&gt; Fixed effects:</span></a>
+<a class="sourceLine" id="cb4-21" title="21"><span class="co">#&gt;             Estimate Std. Error t value</span></a>
+<a class="sourceLine" id="cb4-22" title="22"><span class="co">#&gt; (Intercept)  0.47727    0.69306   0.689</span></a>
+<a class="sourceLine" id="cb4-23" title="23"><span class="co">#&gt; A1           0.36270    0.94803   0.383</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="co">#&gt; A2           0.03153    0.94803   0.033</span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="co">#&gt; A3          -1.47134    0.94803  -1.552</span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-27" title="27"><span class="co">#&gt; Correlation of Fixed Effects:</span></a>
+<a class="sourceLine" id="cb4-28" title="28"><span class="co">#&gt;    (Intr) A1     A2    </span></a>
+<a class="sourceLine" id="cb4-29" title="29"><span class="co">#&gt; A1  0.000              </span></a>
+<a class="sourceLine" id="cb4-30" title="30"><span class="co">#&gt; A2  0.000 -0.333       </span></a>
+<a class="sourceLine" id="cb4-31" title="31"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a></code></pre></div>
+<p>and then gANOVA:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">gANOVA_same &lt;-<span class="st"> </span><span class="kw">gANOVA</span>(y_same <span class="op">~</span><span class="st"> </span>A <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">|</span>A), <span class="dt">data=</span>df, <span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="kw">summary</span>(gANOVA_same)</a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; lmerModgANOVA]</span></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">#&gt; Formula: y_same ~ A + (1 | pt | A)</span></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="co">#&gt;    Data: df</span></a>
+<a class="sourceLine" id="cb5-7" title="7"><span class="co">#&gt; Control: structure(list(optimizer = &quot;nloptwrap&quot;, restart_edge = TRUE,  </span></a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt;     boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE,  </span></a>
+<a class="sourceLine" id="cb5-9" title="9"><span class="co">#&gt;     checkControl = list(check.nobs.vs.rankZ = &quot;ignore&quot;, check.nobs.vs.nlev = &quot;stop&quot;,  </span></a>
+<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt;         check.nlev.gtreq.5 = &quot;ignore&quot;, check.nlev.gtr.1 = &quot;stop&quot;,  </span></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="co">#&gt;         check.nobs.vs.nRE = &quot;stop&quot;, check.rankX = &quot;message+drop.cols&quot;,  </span></a>
+<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt;         check.scaleX = &quot;warning&quot;, check.formula.LHS = &quot;stop&quot;),  </span></a>
+<a class="sourceLine" id="cb5-13" title="13"><span class="co">#&gt;     checkConv = list(check.conv.grad = list(action = &quot;warning&quot;,  </span></a>
+<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt;         tol = 0.002, relTol = NULL), check.conv.singular = list( </span></a>
+<a class="sourceLine" id="cb5-15" title="15"><span class="co">#&gt;         action = &quot;message&quot;, tol = 1e-04), check.conv.hess = list( </span></a>
+<a class="sourceLine" id="cb5-16" title="16"><span class="co">#&gt;         action = &quot;warning&quot;, tol = 1e-06)), optCtrl = list()), class = c(&quot;lmerControl&quot;,  </span></a>
+<a class="sourceLine" id="cb5-17" title="17"><span class="co">#&gt; &quot;merControl&quot;))</span></a>
+<a class="sourceLine" id="cb5-18" title="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-19" title="19"><span class="co">#&gt; REML criterion at convergence: 836.8</span></a>
+<a class="sourceLine" id="cb5-20" title="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-21" title="21"><span class="co">#&gt; Scaled residuals: </span></a>
+<a class="sourceLine" id="cb5-22" title="22"><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></a>
+<a class="sourceLine" id="cb5-23" title="23"><span class="co">#&gt; -2.61123 -0.61168 -0.06369  0.59976  2.64577 </span></a>
+<a class="sourceLine" id="cb5-24" title="24"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-25" title="25"><span class="co">#&gt; Random effects:</span></a>
+<a class="sourceLine" id="cb5-26" title="26"><span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span></a>
+<a class="sourceLine" id="cb5-27" title="27"><span class="co">#&gt;  pt:A     (Intercept)  9.799   3.130   </span></a>
+<a class="sourceLine" id="cb5-28" title="28"><span class="co">#&gt;  pt       (Intercept)  4.619   2.149   </span></a>
+<a class="sourceLine" id="cb5-29" title="29"><span class="co">#&gt;  Residual             13.744   3.707   </span></a>
+<a class="sourceLine" id="cb5-30" title="30"><span class="co">#&gt; Number of obs: 144, groups:  pt:A, 48; pt, 12</span></a>
+<a class="sourceLine" id="cb5-31" title="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-32" title="32"><span class="co">#&gt; Fixed effects:</span></a>
+<a class="sourceLine" id="cb5-33" title="33"><span class="co">#&gt;             Estimate Std. Error       df t value Pr(&gt;|t|)</span></a>
+<a class="sourceLine" id="cb5-34" title="34"><span class="co">#&gt; (Intercept)  0.47727    0.69306 10.99989   0.689    0.505</span></a>
+<a class="sourceLine" id="cb5-35" title="35"><span class="co">#&gt; A1           0.36270    0.94803 33.00003   0.383    0.704</span></a>
+<a class="sourceLine" id="cb5-36" title="36"><span class="co">#&gt; A2           0.03153    0.94803 33.00003   0.033    0.974</span></a>
+<a class="sourceLine" id="cb5-37" title="37"><span class="co">#&gt; A3          -1.47134    0.94803 33.00003  -1.552    0.130</span></a>
+<a class="sourceLine" id="cb5-38" title="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb5-39" title="39"><span class="co">#&gt; Correlation of Fixed Effects:</span></a>
+<a class="sourceLine" id="cb5-40" title="40"><span class="co">#&gt;    (Intr) A1     A2    </span></a>
+<a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; A1  0.000              </span></a>
+<a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; A2  0.000 -0.333       </span></a>
+<a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a></code></pre></div>
+<p>Using <code>y_same</code> the 2 estimations are the same (likelihood, fixed parameters, etc).</p>
+<p>However, using <code>y_diff</code>, the variability of the random intercepts is smaller. The estimation will produce a singular fit using the parametrization of <code>lmer()</code>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">lmer_diff &lt;-<span class="st"> </span><span class="kw">lmer</span>(y_diff<span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt)<span class="op">+</span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">:</span>A),<span class="dt">data=</span>df,<span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; boundary (singular) fit: see ?isSingular</span></a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">summary</span>(lmer_diff)</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; Linear mixed model fit by REML [&#39;lmerMod&#39;]</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt; Formula: y_diff ~ A + (1 | pt) + (1 | pt:A)</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt;    Data: df</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; REML criterion at convergence: 831</span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt; Scaled residuals: </span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; -2.62948 -0.60740 -0.07108  0.61599  2.68565 </span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; Random effects:</span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt;  pt:A     (Intercept)  9.581   3.095   </span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt;  pt       (Intercept)  0.000   0.000   </span></a>
+<a class="sourceLine" id="cb6-18" title="18"><span class="co">#&gt;  Residual             13.744   3.707   </span></a>
+<a class="sourceLine" id="cb6-19" title="19"><span class="co">#&gt; Number of obs: 144, groups:  pt:A, 48; pt, 12</span></a>
+<a class="sourceLine" id="cb6-20" title="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-21" title="21"><span class="co">#&gt; Fixed effects:</span></a>
+<a class="sourceLine" id="cb6-22" title="22"><span class="co">#&gt;             Estimate Std. Error t value</span></a>
+<a class="sourceLine" id="cb6-23" title="23"><span class="co">#&gt; (Intercept) -0.12703    0.54318  -0.234</span></a>
+<a class="sourceLine" id="cb6-24" title="24"><span class="co">#&gt; A1           0.36270    0.94081   0.386</span></a>
+<a class="sourceLine" id="cb6-25" title="25"><span class="co">#&gt; A2           0.03153    0.94081   0.034</span></a>
+<a class="sourceLine" id="cb6-26" title="26"><span class="co">#&gt; A3          -1.47134    0.94081  -1.564</span></a>
+<a class="sourceLine" id="cb6-27" title="27"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb6-28" title="28"><span class="co">#&gt; Correlation of Fixed Effects:</span></a>
+<a class="sourceLine" id="cb6-29" title="29"><span class="co">#&gt;    (Intr) A1     A2    </span></a>
+<a class="sourceLine" id="cb6-30" title="30"><span class="co">#&gt; A1  0.000              </span></a>
+<a class="sourceLine" id="cb6-31" title="31"><span class="co">#&gt; A2  0.000 -0.333       </span></a>
+<a class="sourceLine" id="cb6-32" title="32"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a>
+<a class="sourceLine" id="cb6-33" title="33"><span class="co">#&gt; convergence code: 0</span></a>
+<a class="sourceLine" id="cb6-34" title="34"><span class="co">#&gt; boundary (singular) fit: see ?isSingular</span></a></code></pre></div>
+<p>Estimating the model using <code>gANOVA()</code> reduce the constraint on the parameter space (of the variance of the intercept). the gANOVA parametrization produce a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">mod_gANOVA &lt;-<span class="st"> </span><span class="kw">gANOVA</span>(y_diff<span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">|</span>A),<span class="dt">data=</span>df,<span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">summary</span>(mod_gANOVA)</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt; lmerModgANOVA]</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt; Formula: y_diff ~ A + (1 | pt | A)</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;    Data: df</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt; Control: structure(list(optimizer = &quot;nloptwrap&quot;, restart_edge = TRUE,  </span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;     boundary.tol = 1e-05, calc.derivs = TRUE, use.last.params = FALSE,  </span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;     checkControl = list(check.nobs.vs.rankZ = &quot;ignore&quot;, check.nobs.vs.nlev = &quot;stop&quot;,  </span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;         check.nlev.gtreq.5 = &quot;ignore&quot;, check.nlev.gtr.1 = &quot;stop&quot;,  </span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;         check.nobs.vs.nRE = &quot;stop&quot;, check.rankX = &quot;message+drop.cols&quot;,  </span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;         check.scaleX = &quot;warning&quot;, check.formula.LHS = &quot;stop&quot;),  </span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;     checkConv = list(check.conv.grad = list(action = &quot;warning&quot;,  </span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;         tol = 0.002, relTol = NULL), check.conv.singular = list( </span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt;         action = &quot;message&quot;, tol = 1e-04), check.conv.hess = list( </span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt;         action = &quot;warning&quot;, tol = 1e-06)), optCtrl = list()), class = c(&quot;lmerControl&quot;,  </span></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="co">#&gt; &quot;merControl&quot;))</span></a>
+<a class="sourceLine" id="cb7-18" title="18"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="co">#&gt; REML criterion at convergence: 830.9</span></a>
+<a class="sourceLine" id="cb7-20" title="20"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-21" title="21"><span class="co">#&gt; Scaled residuals: </span></a>
+<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt;      Min       1Q   Median       3Q      Max </span></a>
+<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt; -2.61261 -0.61229 -0.07301  0.62167  2.68455 </span></a>
+<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt; Random effects:</span></a>
+<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt;  Groups   Name        Variance Std.Dev.</span></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt;  pt:A     (Intercept)  9.799   3.130   </span></a>
+<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt;  pt       (Intercept)  2.232   1.494   </span></a>
+<a class="sourceLine" id="cb7-29" title="29"><span class="co">#&gt;  Residual             13.744   3.707   </span></a>
+<a class="sourceLine" id="cb7-30" title="30"><span class="co">#&gt; Number of obs: 144, groups:  pt:A, 48; pt, 12</span></a>
+<a class="sourceLine" id="cb7-31" title="31"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-32" title="32"><span class="co">#&gt; Fixed effects:</span></a>
+<a class="sourceLine" id="cb7-33" title="33"><span class="co">#&gt;             Estimate Std. Error       df t value Pr(&gt;|t|)</span></a>
+<a class="sourceLine" id="cb7-34" title="34"><span class="co">#&gt; (Intercept) -0.12703    0.53048 10.99999  -0.239    0.815</span></a>
+<a class="sourceLine" id="cb7-35" title="35"><span class="co">#&gt; A1           0.36270    0.94803 33.00006   0.383    0.704</span></a>
+<a class="sourceLine" id="cb7-36" title="36"><span class="co">#&gt; A2           0.03153    0.94803 33.00006   0.033    0.974</span></a>
+<a class="sourceLine" id="cb7-37" title="37"><span class="co">#&gt; A3          -1.47134    0.94803 33.00006  -1.552    0.130</span></a>
+<a class="sourceLine" id="cb7-38" title="38"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-39" title="39"><span class="co">#&gt; Correlation of Fixed Effects:</span></a>
+<a class="sourceLine" id="cb7-40" title="40"><span class="co">#&gt;    (Intr) A1     A2    </span></a>
+<a class="sourceLine" id="cb7-41" title="41"><span class="co">#&gt; A1  0.000              </span></a>
+<a class="sourceLine" id="cb7-42" title="42"><span class="co">#&gt; A2  0.000 -0.333       </span></a>
+<a class="sourceLine" id="cb7-43" title="43"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

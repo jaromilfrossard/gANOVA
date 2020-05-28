@@ -4,8 +4,7 @@
 \alias{summary.lmerModgANOVA}
 \title{summary method for merModgANVOA}
 \usage{
-\method{summary}{lmerModgANOVA}(object, ..., ddf = c("Satterthwaite",
-  "Kenward-Roger", "lme4"))
+\method{summary}{lmerModgANOVA}(object, ..., ddf = c("Satterthwaite", "Kenward-Roger", "lme4"))
 }
 \arguments{
 \item{object}{an object of class lmerModgANOVA.}
