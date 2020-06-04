@@ -19,7 +19,7 @@ Make sure to install `gANOVA` with its full documentation:
 
 To see the difference between the `lme4` and the `gANOVA` parametrization of the spherical correlation structure check the vignette:
 
-`vignette("spherical-distribution-exmaple", package = "gANOVA")`
+`vignette("spherical-distribution-example", package = "gANOVA")`
 
 
 

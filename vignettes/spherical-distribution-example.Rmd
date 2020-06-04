@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-We present here some example to highlight the difference between the `gANOVA()` function and the built-in spherical distribution of `lmer()`.
+We present here some examples to highlight the difference between the `gANOVA()` function and the built-in spherical distribution of `lmer()`. Both function estimate a spherical correlation structure. However the parametrization in using `gANOVA()` increase the parameter space and a wider range of models can be estimated without having estimate at the boundary of the parameter space (variance estimation at 0).
 
 We will need the following packages:
 
@@ -29,7 +29,7 @@ library(tidyverse)
 ```
 
 
-Then we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:
+Then, we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:
 
 ```{r}
 set.seed(42)
@@ -42,7 +42,7 @@ df <- expand.grid(pt = paste0("P",str_pad(1:12,width = 2,pad = "0")),
 ```
 
 
-Then we simulate the response variable
+Then we simulate the response variable:
 
 
 ```{r}
@@ -53,7 +53,7 @@ df<-
   mutate(ranef_pt = rnorm(n(), sd = .8))%>%
   unnest(data)
 
-# add +(1|pt:A) random slopes
+# add +(1|pt:A) random interaction
 df<-
   df%>%
   nest(data=-c(pt,A))%>%
@@ -69,8 +69,8 @@ df<-
 # create 2 dependant variables
 df <- df%>%
   transmute(pt = pt, A= A,
-            y_diff = ranef_pt+ranef_ptA+err,
-            y_same =  ranef_pt*2+ranef_ptA+err)
+            y_diff = ranef_pt + ranef_ptA + err,
+            y_same =  ranef_pt*2 +ranef_ptA + err)
 ```
 
 
@@ -90,7 +90,7 @@ gANOVA_same <- gANOVA(y_same ~ A + (1|pt|A), data=df, contrasts = list(A = contr
 summary(gANOVA_same)
 ```
 
-Using `y_same` the 2 estimations are the same (likelihood, fixed parameters, etc).
+Using `y_same` the 2 estimations are the same (likelihood, fixed parameters, etc). Here the reparametrizations of `gANOVA()` does not improve the results as the variance of the random intercept is big enough with respect to the variance of the random interaction.
 
 However, using `y_diff`, the variability of the random intercepts is smaller. The estimation will produce a singular fit using the parametrization of `lmer()`:
 
@@ -100,7 +100,7 @@ summary(lmer_diff)
 ```
 
 
-Estimating the model using `gANOVA()` reduce the constraint on the parameter space (of the variance of the intercept). the gANOVA parametrization produce a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:
+Estimating the model using `gANOVA()` reduce the constraint on the parameter space (of the variance of the intercept). The `gANOVA` parametrization produces a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:
 
 
 ```{r}

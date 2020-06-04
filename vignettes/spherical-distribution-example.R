@@ -26,7 +26,7 @@ df<-
   mutate(ranef_pt = rnorm(n(), sd = .8))%>%
   unnest(data)
 
-# add +(1|pt:A) random slopes
+# add +(1|pt:A) random interaction
 df<-
   df%>%
   nest(data=-c(pt,A))%>%
@@ -42,8 +42,8 @@ df<-
 # create 2 dependant variables
 df <- df%>%
   transmute(pt = pt, A= A,
-            y_diff = ranef_pt+ranef_ptA+err,
-            y_same =  ranef_pt*2+ranef_ptA+err)
+            y_diff = ranef_pt + ranef_ptA + err,
+            y_same =  ranef_pt*2 +ranef_ptA + err)
 
 ## -----------------------------------------------------------------------------
 lmer_same <- lmer(y_same ~ A+ (1|pt) + (1|pt:A), data=df, contrasts = list(A = contr.sum))

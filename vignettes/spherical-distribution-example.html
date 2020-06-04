@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jaromil Frossard" />
 
-<meta name="date" content="2020-05-28" />
+<meta name="date" content="2020-06-04" />
 
 <title>Spherical distribution: example</title>
 
@@ -301,18 +301,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Spherical distribution: example</h1>
 <h4 class="author">Jaromil Frossard</h4>
-<h4 class="date">2020-05-28</h4>
+<h4 class="date">2020-06-04</h4>
 
 
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>We present here some example to highlight the difference between the <code>gANOVA()</code> function and the built-in spherical distribution of <code>lmer()</code>.</p>
+<p>We present here some examples to highlight the difference between the <code>gANOVA()</code> function and the built-in spherical distribution of <code>lmer()</code>. Both function estimate a spherical correlation structure. However the parametrization in using <code>gANOVA()</code> increase the parameter space and a wider range of models can be estimated without having estimate at the boundary of the parameter space (variance estimation at 0).</p>
 <p>We will need the following packages:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(lme4)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">library</span>(gANOVA)</a>
 <a class="sourceLine" id="cb1-3" title="3"><span class="kw">library</span>(tidyverse)</a></code></pre></div>
-<p>Then we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:</p>
+<p>Then, we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">set.seed</span>(<span class="dv">42</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2"></a>
 <a class="sourceLine" id="cb2-3" title="3">df &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">pt =</span> <span class="kw">paste0</span>(<span class="st">&quot;P&quot;</span>,<span class="kw">str_pad</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">12</span>,<span class="dt">width =</span> <span class="dv">2</span>,<span class="dt">pad =</span> <span class="st">&quot;0&quot;</span>)),</a>
@@ -320,7 +320,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb2-5" title="5">                  <span class="dt">r =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,</a>
 <a class="sourceLine" id="cb2-6" title="6">                  <span class="dt">stringsAsFactors =</span> F)<span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb2-7" title="7"><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>r)</a></code></pre></div>
-<p>Then we simulate the response variable</p>
+<p>Then we simulate the response variable:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co"># add +(1|pt) random intercept</span></a>
 <a class="sourceLine" id="cb3-2" title="2">df&lt;-</a>
 <a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span>df<span class="op">%&gt;%</span></a>
@@ -328,7 +328,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb3-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">ranef_pt =</span> <span class="kw">rnorm</span>(<span class="kw">n</span>(), <span class="dt">sd =</span> <span class="fl">.8</span>))<span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-6" title="6"><span class="st">  </span><span class="kw">unnest</span>(data)</a>
 <a class="sourceLine" id="cb3-7" title="7"></a>
-<a class="sourceLine" id="cb3-8" title="8"><span class="co"># add +(1|pt:A) random slopes</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co"># add +(1|pt:A) random interaction</span></a>
 <a class="sourceLine" id="cb3-9" title="9">df&lt;-</a>
 <a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span>df<span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-11" title="11"><span class="st">  </span><span class="kw">nest</span>(<span class="dt">data=</span><span class="op">-</span><span class="kw">c</span>(pt,A))<span class="op">%&gt;%</span></a>
@@ -344,8 +344,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb3-21" title="21"><span class="co"># create 2 dependant variables</span></a>
 <a class="sourceLine" id="cb3-22" title="22">df &lt;-<span class="st"> </span>df<span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-23" title="23"><span class="st">  </span><span class="kw">transmute</span>(<span class="dt">pt =</span> pt, <span class="dt">A=</span> A,</a>
-<a class="sourceLine" id="cb3-24" title="24">            <span class="dt">y_diff =</span> ranef_pt<span class="op">+</span>ranef_ptA<span class="op">+</span>err,</a>
-<a class="sourceLine" id="cb3-25" title="25">            <span class="dt">y_same =</span>  ranef_pt<span class="op">*</span><span class="dv">2</span><span class="op">+</span>ranef_ptA<span class="op">+</span>err)</a></code></pre></div>
+<a class="sourceLine" id="cb3-24" title="24">            <span class="dt">y_diff =</span> ranef_pt <span class="op">+</span><span class="st"> </span>ranef_ptA <span class="op">+</span><span class="st"> </span>err,</a>
+<a class="sourceLine" id="cb3-25" title="25">            <span class="dt">y_same =</span>  ranef_pt<span class="op">*</span><span class="dv">2</span> <span class="op">+</span>ranef_ptA <span class="op">+</span><span class="st"> </span>err)</a></code></pre></div>
 <p>Finally, we estimate the model using <code>y_same</code> as dependant variable:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">lmer_same &lt;-<span class="st"> </span><span class="kw">lmer</span>(y_same <span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">:</span>A), <span class="dt">data=</span>df, <span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
 <a class="sourceLine" id="cb4-2" title="2"><span class="kw">summary</span>(lmer_same)</a>
@@ -422,7 +422,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb5-41" title="41"><span class="co">#&gt; A1  0.000              </span></a>
 <a class="sourceLine" id="cb5-42" title="42"><span class="co">#&gt; A2  0.000 -0.333       </span></a>
 <a class="sourceLine" id="cb5-43" title="43"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a></code></pre></div>
-<p>Using <code>y_same</code> the 2 estimations are the same (likelihood, fixed parameters, etc).</p>
+<p>Using <code>y_same</code> the 2 estimations are the same (likelihood, fixed parameters, etc). Here the reparametrizations of <code>gANOVA()</code> does not improve the results as the variance of the random intercept is big enough with respect to the variance of the random interaction.</p>
 <p>However, using <code>y_diff</code>, the variability of the random intercepts is smaller. The estimation will produce a singular fit using the parametrization of <code>lmer()</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">lmer_diff &lt;-<span class="st"> </span><span class="kw">lmer</span>(y_diff<span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt)<span class="op">+</span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">:</span>A),<span class="dt">data=</span>df,<span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; boundary (singular) fit: see ?isSingular</span></a>
@@ -458,7 +458,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb6-32" title="32"><span class="co">#&gt; A3  0.000 -0.333 -0.333</span></a>
 <a class="sourceLine" id="cb6-33" title="33"><span class="co">#&gt; convergence code: 0</span></a>
 <a class="sourceLine" id="cb6-34" title="34"><span class="co">#&gt; boundary (singular) fit: see ?isSingular</span></a></code></pre></div>
-<p>Estimating the model using <code>gANOVA()</code> reduce the constraint on the parameter space (of the variance of the intercept). the gANOVA parametrization produce a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:</p>
+<p>Estimating the model using <code>gANOVA()</code> reduce the constraint on the parameter space (of the variance of the intercept). The <code>gANOVA</code> parametrization produces a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">mod_gANOVA &lt;-<span class="st"> </span><span class="kw">gANOVA</span>(y_diff<span class="op">~</span><span class="st"> </span>A<span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>pt<span class="op">|</span>A),<span class="dt">data=</span>df,<span class="dt">contrasts =</span> <span class="kw">list</span>(<span class="dt">A =</span> contr.sum))</a>
 <a class="sourceLine" id="cb7-2" title="2"><span class="kw">summary</span>(mod_gANOVA)</a>
 <a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; Linear mixed model fit by REML. t-tests use Satterthwaite&#39;s method [</span></a>
