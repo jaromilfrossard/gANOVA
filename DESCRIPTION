@@ -1,6 +1,6 @@
 Package: gANOVA
 Type: Package
-Title: Generalized covariance structure of ANOVA to mixed models
+Title: Generalization of the ANOVA covariance structure to mixed models
 Version: 0.0.0
 Authors@R: c(
   person("Jaromil","Frossard", email = "jaromil.frossard@unige.ch",role = c("aut", "cre")),
