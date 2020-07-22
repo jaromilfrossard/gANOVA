@@ -1,7 +1,7 @@
 #' lFormula for gANOVA correlation structure
 #'
-#' @description This function provide a small modification of the \code{lme4} function \code{link{lFormula}} in order to estimated mixed models with the same variance for orthonormal contrasts. Check formula parameter for details.
-#' @param formula a \code{lme4} formula. If you provide a formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See link{gANOVA} for the reduced notation.
+#' @description Construction of the matrices from a formula object, modification of the \code{lme4} function \code{link{lFormula}}.
+#' @param formula a \code{lme4} formula. A formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor will have the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See link{gANOVA} for the reduced notation.
 #' @param data a data frame. See \code{\link{lmer}} for more details.
 #' @param REML a logical that indicate which criterion to optimize. See \code{\link{lmer}} for more details.
 #' @param subset an expression to selecte a subset of the data. See \code{\link{lmer}} for more details.

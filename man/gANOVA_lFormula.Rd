@@ -18,7 +18,7 @@ gANOVA_lFormula(
 )
 }
 \arguments{
-\item{formula}{a \code{lme4} formula. If you provide a formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor then the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See link{gANOVA} for the reduced notation.}
+\item{formula}{a \code{lme4} formula. A formula of type \code{(1|id:g)} where \code{id} is the grouping variable and \code{g} is a factor will have the covariance structure will estimate the same variance for all orthonormal (\code{contr.poly}) contrasts in \code{g}. WARNINGS The identifier of the grouping variable \code{id} must be written as the first terms to the right of the \code{"|"} because all other terms will be "reduced" by an orthonormal contrasts. See link{gANOVA} for the reduced notation.}
 
 \item{data}{a data frame. See \code{\link{lmer}} for more details.}
 
@@ -39,5 +39,5 @@ gANOVA_lFormula(
 \item{...}{See \code{\link{lFormula}} or \code{\link{lmer}} for more details.}
 }
 \description{
-This function provide a small modification of the \code{lme4} function \code{link{lFormula}} in order to estimated mixed models with the same variance for orthonormal contrasts. Check formula parameter for details.
+Construction of the matrices from a formula object, modification of the \code{lme4} function \code{link{lFormula}}.
 }
