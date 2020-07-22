@@ -10,6 +10,7 @@
 #' @importFrom Matrix rBind
 #' @importFrom lme4 getME rePos
 #' @export
+#' @family output
 ranef.lmerModgANOVA <- function (object, condVar = FALSE, drop = FALSE, whichel = names(ans),
                      postVar = FALSE, ...)
 {

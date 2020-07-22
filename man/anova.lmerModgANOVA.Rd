@@ -21,5 +21,11 @@
 \item{ddf}{a character string indicating the method.See \code{lmerTest} package.}
 }
 \description{
-modified anova method from \code{lmerTest} package
+Mdified anova method from the \code{lmerTest} package
 }
+\seealso{
+Other output: 
+\code{\link{ranef.lmerModgANOVA}()},
+\code{\link{summary.lmerModgANOVA}()}
+}
+\concept{output}

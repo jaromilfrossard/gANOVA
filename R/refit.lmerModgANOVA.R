@@ -11,6 +11,7 @@
 #' @export
 #' @importFrom lme4 isGLMM isLMM isREML GHrule fixef mkMerMod mkRespMod
 #' @importFrom stats model.frame family
+#' @family estimation
 refit.lmerModgANOVA <-function (object, newresp = NULL, rename.response = FALSE, maxit = 100L,
             ...)
   {

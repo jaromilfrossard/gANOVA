@@ -21,6 +21,7 @@
 #' @importFrom stats as.formula formula getCall model.matrix sigma terms update.formula
 #' @importFrom lme4 lmerControl glmerControl mkLmerDevfun optimizeLmer checkConv
 #' @export
+#' @family estimation
 gANOVA <- function (formula, data = NULL, REML = TRUE, control = lmerControl(),
                     start = NULL, verbose = 0L, subset, weights, na.action, offset,
                     contrasts = NULL, devFunOnly = FALSE, ...)

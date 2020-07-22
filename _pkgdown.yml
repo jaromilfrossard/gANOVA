@@ -1,0 +1,6 @@
+destination: docs
+
+reference:
+- title: "Cross-Random Linear Mixed Models with Spherical Distribution of the Random Effects (gANOVA)"
+  desc: >
+    Modification of `lme4` to estimate spherical distribution

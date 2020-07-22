@@ -4,7 +4,7 @@ author: "Jaromil Frossard and Olivier Renaud"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Spherical distribution of the random effects: example}
+  %\VignetteIndexEntry{Spherical distribution of the random effects: some examples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

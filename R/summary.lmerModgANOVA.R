@@ -7,6 +7,7 @@
 #' @param ... futher argument. See details.
 #' @details See the lmerTest package for more informations.
 #' @export
+#' @family output
 summary.lmerModgANOVA <- function(object, ..., ddf = c("Satterthwaite", "Kenward-Roger", "lme4")){
   lmerTest:::summary.lmerModLmerTest(object = object, ... = ... ,ddf = ddf)
 }

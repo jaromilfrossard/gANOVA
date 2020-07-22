@@ -1,6 +1,6 @@
 #' anova method for merModgANVOA
 #'
-#' @description modified anova method from \code{lmerTest} package
+#' @description Mdified anova method from the \code{lmerTest} package
 #'
 #' @param object an object of class lmerModgANOVA. See \code{lmerTest} package.
 #' @param ddf a character string indicating the method.See \code{lmerTest} package.
@@ -9,6 +9,7 @@
 #' @importFrom methods callNextMethod
 #' @importFrom utils as.roman
 #' @export
+#' @family output
 anova.lmerModgANOVA <- function(object, ..., type = c("III", "II", "I", "3", "2", "1"),
                                 ddf = c("Satterthwaite", "Kenward-Roger", "lme4")){
   lmerTest:::anova.lmerModLmerTest(object = object, ... = ... ,type=type,ddf = ddf)

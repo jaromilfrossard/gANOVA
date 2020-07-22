@@ -29,3 +29,9 @@ ranef.lmerModgANOVA(
 \description{
 Extract the modes of random effects (BLUP) of the model. Just small changes from the ranef.merMod method of lme4 to handle lmerModgANOVA.
 }
+\seealso{
+Other output: 
+\code{\link{anova.lmerModgANOVA}()},
+\code{\link{summary.lmerModgANOVA}()}
+}
+\concept{output}

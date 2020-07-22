@@ -56,4 +56,8 @@ Given 2 factors, \code{f} and \code{g}, and a grouping variable \code{id}, the f
 }
 \seealso{
 \code{\link{lmer}}.
+
+Other estimation: 
+\code{\link{refit.lmerModgANOVA}()}
 }
+\concept{estimation}

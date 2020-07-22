@@ -19,3 +19,9 @@ modified summary method from lmerTest package
 \details{
 See the lmerTest package for more informations.
 }
+\seealso{
+Other output: 
+\code{\link{anova.lmerModgANOVA}()},
+\code{\link{ranef.lmerModgANOVA}()}
+}
+\concept{output}

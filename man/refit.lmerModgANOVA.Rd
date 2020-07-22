@@ -28,4 +28,8 @@ Refit a lmerModgANOVA model with a new response
 }
 \seealso{
 \code{\link{refit}}
+
+Other estimation: 
+\code{\link{gANOVA}()}
 }
+\concept{estimation}
