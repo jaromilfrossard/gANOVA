@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Comparison-of-the-shapes-of-the-likelihood.html">Comparison of the shapes of the likelihood</a>
+    </li>
+    <li>
       <a href="../articles/spherical-distribution-example.html">Spherical distribution of the random effects: some examples</a>
     </li>
   </ul>
@@ -87,13 +90,17 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>We present here some examples to highlight the difference between the <code><a href="../reference/gANOVA.html">gANOVA()</a></code> function and the built-in spherical distribution of <code><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer()</a></code>. Both function estimate a spherical correlation structure. However the parametrization in using <code><a href="../reference/gANOVA.html">gANOVA()</a></code> increase the parameter space and a wider range of models can be estimated without having estimate at the boundary of the parameter space (variance estimation at 0).</p>
-<p>We will need the following packages:</p>
+<p>We present here some examples to highlight the differences between the <code><a href="../reference/gANOVA.html">gANOVA()</a></code> function and the built-in spherical distribution of <code><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer()</a></code>. Both functions estimate a spherical correlation structure. However the parametrization using <code><a href="../reference/gANOVA.html">gANOVA()</a></code> increases the parameter space and widen the range of the models that can be estimated without having estimates at the boundary of the parameter space (e.g. variances estimated at 0).</p>
+<p>We need the following packages:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/lme4/lme4">lme4</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">gANOVA</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://tidyverse.tidyverse.org">tidyverse</a></span>)
 </pre></div>
+</div>
+<div id="simulating-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#simulating-data" class="anchor"></a>Simulating data</h1>
 <p>Then, we construct the design of a simple experiment. It contains 12 participants, a within-participant factor with 4 levels and 3 replications for each participant within each level. The design is simply:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">42</span>)
@@ -104,7 +111,7 @@
                   stringsAsFactors = <span class="kw">F</span>)<span class="op">%&gt;%</span>
   <span class="fu">select</span>(<span class="op">-</span><span class="kw">r</span>)
 </pre></div>
-<p>Then we simulate the response variable:</p>
+<p>Then we simulate 2 different response variables. There are <code>y_diff</code> and <code>y_same</code> and they differ only by the variance of the random intercepts. The response <code>y_diff</code> has a lower variance of the random intercepts compared to the one of the random interactions.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
 <span class="co"># add +(1|pt) random intercept</span>
 <span class="kw">df</span><span class="op">&lt;-</span>
@@ -132,6 +139,10 @@
             y_diff = <span class="kw">ranef_pt</span> <span class="op">+</span> <span class="kw">ranef_ptA</span> <span class="op">+</span> <span class="kw">err</span>,
             y_same =  <span class="kw">ranef_pt</span><span class="op">*</span><span class="fl">2</span> <span class="op">+</span><span class="kw">ranef_ptA</span> <span class="op">+</span> <span class="kw">err</span>)
 </pre></div>
+</div>
+<div id="comparing-estimation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#comparing-estimation" class="anchor"></a>Comparing estimation</h1>
 <p>Finally, we estimate the model using <code>y_same</code> as dependant variable:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw">lmer_same</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">y_same</span> <span class="op">~</span> <span class="kw">A</span><span class="op">+</span> (<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span>) <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span><span class="op">:</span><span class="kw">A</span>), data=<span class="kw">df</span>, contrasts = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(A = <span class="kw">contr.sum</span>))
@@ -213,9 +224,9 @@
 <span class="co">#&gt; A3  0.000 -0.333 -0.333</span>
 </pre></div>
 <p>Using <code>y_same</code> the 2 estimations are the same (likelihood, fixed parameters, etc). Here the reparametrizations of <code><a href="../reference/gANOVA.html">gANOVA()</a></code> does not improve the results as the variance of the random intercept is big enough with respect to the variance of the random interaction.</p>
-<p>However, using <code>y_diff</code>, the variability of the random intercepts is smaller. The estimation will produce a singular fit using the parametrization of <code><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer()</a></code>:</p>
+<p>However, using <code>y_diff</code>, the variability of the random intercepts is smaller. The estimation using the parametrization of <code><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer()</a></code> produces a singular fit:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">lmer_diff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">y_diff</span><span class="op">~</span> <span class="kw">A</span><span class="op">+</span> (<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span>)<span class="op">+</span>(<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span><span class="op">:</span><span class="kw">A</span>),data=<span class="kw">df</span>,contrasts = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(A = <span class="kw">contr.sum</span>))
+<span class="kw">lmer_diff</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">y_diff</span><span class="op">~</span> <span class="kw">A</span> <span class="op">+</span> (<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span>)<span class="op">+</span>(<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span><span class="op">:</span><span class="kw">A</span>),data=<span class="kw">df</span>,contrasts = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(A = <span class="kw">contr.sum</span>))
 <span class="co">#&gt; boundary (singular) fit: see ?isSingular</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">lmer_diff</span>)
 <span class="co">#&gt; Linear mixed model fit by REML ['lmerMod']</span>
@@ -250,7 +261,7 @@
 <span class="co">#&gt; convergence code: 0</span>
 <span class="co">#&gt; boundary (singular) fit: see ?isSingular</span>
 </pre></div>
-<p>Estimating the model using <code><a href="../reference/gANOVA.html">gANOVA()</a></code> reduce the constraint on the parameter space (of the variance of the intercept). The <code>gANOVA</code> parametrization produces a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:</p>
+<p>Estimating the model using <code><a href="../reference/gANOVA.html">gANOVA()</a></code> reduces the constraint on the parameter space (of the variance of the intercept). The <code>gANOVA</code> parametrization produces a non-zero estimate of the variance of the random intercept. It follows that the likelihood is smaller:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="kw">mod_gANOVA</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gANOVA.html">gANOVA</a></span>(<span class="kw">y_diff</span><span class="op">~</span> <span class="kw">A</span><span class="op">+</span> (<span class="fl">1</span><span class="op">|</span><span class="kw">pt</span><span class="op">|</span><span class="kw">A</span>),data=<span class="kw">df</span>,contrasts = <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(A = <span class="kw">contr.sum</span>))
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="kw">mod_gANOVA</span>)

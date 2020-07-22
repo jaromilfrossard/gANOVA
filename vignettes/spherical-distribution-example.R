@@ -54,7 +54,7 @@ gANOVA_same <- gANOVA(y_same ~ A + (1|pt|A), data=df, contrasts = list(A = contr
 summary(gANOVA_same)
 
 ## -----------------------------------------------------------------------------
-lmer_diff <- lmer(y_diff~ A+ (1|pt)+(1|pt:A),data=df,contrasts = list(A = contr.sum))
+lmer_diff <- lmer(y_diff~ A + (1|pt)+(1|pt:A),data=df,contrasts = list(A = contr.sum))
 summary(lmer_diff)
 
 ## -----------------------------------------------------------------------------
