@@ -1,5 +1,7 @@
 
-<!-- badges: start --> [![R build
+<!-- badges: start -->
+
+[![R build
 status](https://github.com/jaromilfrossard/gANOVA/workflows/R-CMD-check/badge.svg)](https://github.com/jaromilfrossard/gANOVA/actions)
 <!-- badges: end -->
 
@@ -19,7 +21,9 @@ covariance estimated using `+ (1|id) + (1|id:f)` may have the variance
 of `(1|id)` estimated at the boundary (or simply 0). `gANOVA`
 reparametrizes the covariance matrix in order to extend the range of
 parameters such that variance of lower interactions estimated at 0
-happen less.
+happen less. Check the
+[vignette](https://jaromilfrossard.github.io/gANOVA/articles/spherical-distribution-example.html)
+for examples.
 
 Technically, this new parametrization is simply transforming factors
 into orthonormal contrasts and imposing a unique variance parameter for
@@ -47,6 +51,7 @@ TRUE)`
 
 To see the difference between the `lme4` and the `gANOVA`
 parametrization of the spherical correlation structure check the
-vignette:
+[vignette](https://jaromilfrossard.github.io/gANOVA/articles/spherical-distribution-example.html)
+or run:
 
 `vignette("spherical-distribution-example", package = "gANOVA")`

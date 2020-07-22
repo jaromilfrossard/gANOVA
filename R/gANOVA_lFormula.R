@@ -14,6 +14,7 @@
 #' @importFrom Matrix rankMatrix
 #' @importFrom lme4 expandDoubleVerts subbars factorize findbars nobars
 #' @export
+#' @family helper
 gANOVA_lFormula <- function(formula, data = NULL, REML = TRUE, subset, weights,
             na.action, offset, contrasts = NULL, control = lmerControl(),
             ...){

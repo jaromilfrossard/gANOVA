@@ -8,3 +8,8 @@
 \description{
 The MerModgANOVA class
 }
+\seealso{
+Other helper: 
+\code{\link{gANOVA_lFormula}()}
+}
+\concept{helper}

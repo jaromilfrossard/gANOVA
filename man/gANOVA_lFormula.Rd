@@ -41,3 +41,8 @@ gANOVA_lFormula(
 \description{
 Construction of the matrices from a formula object, modification of the \code{lme4} function \code{link{lFormula}}.
 }
+\seealso{
+Other helper: 
+\code{\link{lmerModgANOVA-class}}
+}
+\concept{helper}

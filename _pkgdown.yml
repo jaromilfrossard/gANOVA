@@ -11,3 +11,9 @@ reference:
     Get output from gANOVA object
   contents:
    - has_concept("output")
+- title: Helpers
+  desc: >
+    Help creating the model
+  contents:
+   - has_concept("helper")
+
