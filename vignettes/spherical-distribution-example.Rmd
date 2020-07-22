@@ -1,10 +1,10 @@
 ---
-title: "Spherical distribution: example"
-author: "Jaromil Frossard"
+title: "Spherical distribution of the random effects: some examples"
+author: "Jaromil Frossard and Olivier Renaud"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{spherical-distribution-example}
+  %\VignetteIndexEntry{Spherical distribution of the random effects: example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
